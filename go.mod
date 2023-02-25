@@ -12,6 +12,7 @@ require (
 	github.com/dlclark/regexp2 v1.7.0 // indirect
 	github.com/dop251/goja v0.0.0-20221115122301-6c0d9883792e // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hraban/opus v0.0.0-20220302220929-eeacdbcb92d0 // indirect
 	github.com/jonas747/dca v0.0.0-20210930103944-155f5e5f0cc7 // indirect
