@@ -1,6 +1,8 @@
 package queue
 
-type Queue []interface{}
+import "github.com/kucheriavij/discord-music-bot/src/structures"
+
+type Queue []*structures.TerentyVoice
 
 var TerentyQueue *Queue
 
@@ -8,13 +10,13 @@ func NewQueue() {
 	TerentyQueue = &Queue{}
 }
 
-func (self *Queue) Push(x interface{}) {
+func (self *Queue) Push(x *structures.TerentyVoice) {
 	*self = append(*self, x)
 }
 
-func (self *Queue) Pop() interface{} {
+func (self *Queue) Pop() *structures.TerentyVoice {
 	h := *self
-	var el interface{}
+	var el *structures.TerentyVoice
 	l := len(h)
 
 	if l == 0 {

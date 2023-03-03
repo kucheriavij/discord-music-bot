@@ -13,8 +13,7 @@ import (
 )
 
 var (
-	Token  string
-	ApiUrl string
+	Token string
 )
 
 func init() {
@@ -25,7 +24,6 @@ func init() {
 	}
 
 	Token = os.Getenv("BOT_TOKEN")
-	ApiUrl = os.Getenv("BOT_API_URL")
 
 	queue.NewQueue()
 }
@@ -38,7 +36,7 @@ func main() {
 	}
 
 	dg.AddHandler(handlers.MessageCreate)
-	dg.Identify.Intents = discordgo.MakeIntent(discordgo.IntentGuildMessages | discordgo.IntentsGuildVoiceStates)
+	dg.Identify.Intents = discordgo.MakeIntent(discordgo.IntentGuildMessages | discordgo.IntentsGuildVoiceStates | discordgo.IntentsGuildMembers | discordgo.IntentsGuildPresences)
 
 	go twitter.Play(dg)
 
@@ -54,5 +52,8 @@ func main() {
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 
-	dg.Close()
+	err = dg.Close()
+	if err != nil {
+		log.Println("Не смог закрыть")
+	}
 }
