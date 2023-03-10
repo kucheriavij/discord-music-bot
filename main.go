@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
 	"log"
@@ -59,7 +58,7 @@ func main() {
 		log.Fatal("Error opening connection", err)
 	}
 
-	fmt.Print("Bot is now running. Press CTRL-C to exit.")
+	log.Println("Бот стартанул")
 
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
