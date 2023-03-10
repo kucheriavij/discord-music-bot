@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 )
 
@@ -14,13 +16,27 @@ var (
 )
 
 func init() {
-	err := os.MkdirAll("var/log", 0755)
+	executable, err := os.Executable()
+
+	if err != nil {
+		log.Fatal("Cant get current executable path")
+	}
+
+	dir, err := filepath.Abs(executable)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	f, err := os.OpenFile("var/log/terenty.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	dir = filepath.Dir(dir)
+
+	err = os.MkdirAll(fmt.Sprintf("%s/var/log", dir), 0755)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	f, err := os.OpenFile(fmt.Sprintf("%s/var/log/terenty.log", dir), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 
 	if err != nil {
 		log.Fatal(err)
@@ -29,7 +45,7 @@ func init() {
 	log.SetOutput(f)
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
 
-	err = godotenv.Load(".env")
+	err = godotenv.Load(fmt.Sprintf("%s/.env", dir))
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
