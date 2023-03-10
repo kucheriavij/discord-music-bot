@@ -1,11 +1,7 @@
-package handlers
+package main
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/kucheriavij/discord-music-bot/src"
-	"github.com/kucheriavij/discord-music-bot/src/queue"
-	"github.com/kucheriavij/discord-music-bot/src/structures"
-	"github.com/kucheriavij/discord-music-bot/src/youtube"
 	"log"
 	"regexp"
 	"strings"
@@ -17,7 +13,7 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	channel := src.GetVoiceChannel(s, m.GuildID, m.ChannelID, m)
+	channel := GetVoiceChannel(s, m.GuildID, m.ChannelID, m)
 
 	if channel == nil {
 		log.Println("Пользователь еще не сидит ☭")
@@ -33,7 +29,7 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 
-		queue.TerentyVoiceQueue.PushVoice(&structures.TerentyVoice{
+		TerentyVoiceQueue.PushVoice(&TerentyVoice{
 			Url:          match,
 			VoiceChannel: channel,
 		})
@@ -48,8 +44,7 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 
-		youtube.Search(m.Content, channel)
-		log.Printf("query string: '%s'; query length: '%d'", m.Content, len(m.Content))
+		Search(m.Content, channel)
 	}
 
 	if strings.HasPrefix(m.Content, "!stop") {

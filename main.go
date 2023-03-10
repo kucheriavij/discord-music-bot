@@ -1,11 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
-	"github.com/kucheriavij/discord-music-bot/src/handlers"
-	"github.com/kucheriavij/discord-music-bot/src/queue"
-	"github.com/kucheriavij/discord-music-bot/src/twitter"
 	"log"
 	"os"
 	"os/signal"
@@ -17,7 +15,22 @@ var (
 )
 
 func init() {
-	err := godotenv.Load(".env")
+	err := os.MkdirAll("var/log", 0755)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	f, err := os.OpenFile("var/log/terenty.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.SetOutput(f)
+	log.SetFlags(log.Lshortfile | log.LstdFlags)
+
+	err = godotenv.Load(".env")
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -25,7 +38,7 @@ func init() {
 
 	Token = os.Getenv("BOT_TOKEN")
 
-	queue.NewQueue()
+	NewQueue()
 }
 
 func main() {
@@ -35,10 +48,10 @@ func main() {
 		log.Fatal("Error creating Discord session", err)
 	}
 
-	dg.AddHandler(handlers.MessageCreate)
+	dg.AddHandler(MessageCreate)
 	dg.Identify.Intents = discordgo.MakeIntent(discordgo.IntentGuildMessages | discordgo.IntentsGuildVoiceStates | discordgo.IntentsGuildMembers | discordgo.IntentsGuildPresences)
 
-	go twitter.Play(dg)
+	go Play(dg)
 
 	err = dg.Open()
 
@@ -46,7 +59,7 @@ func main() {
 		log.Fatal("Error opening connection", err)
 	}
 
-	log.Print("Bot is now running. Press CTRL-C to exit.")
+	fmt.Print("Bot is now running. Press CTRL-C to exit.")
 
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
