@@ -1,4 +1,4 @@
-package twitter // Package twitter "Щебетарь"
+package twitter // Package twitter - "Щебетарь"
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ func Play(s *discordgo.Session) {
 	for {
 		time.Sleep(500 * time.Millisecond)
 
-		terenty := queue.TerentyQueue.Pop()
+		terenty := queue.TerentyVoiceQueue.PopVoice()
 
 		if terenty == nil {
 			continue
@@ -91,6 +91,7 @@ func playTweet(s *discordgo.Session, terenty *structures.TerentyVoice) {
 	dca.NewStream(encodingSession, voice, done)
 	err = <-done
 	if err != nil && err != io.EOF {
+		_, err = s.ChannelMessageSend(terenty.VoiceChannel.ID, "Мммм, хуета")
 		log.Println("Мммм, хуета")
 	}
 }

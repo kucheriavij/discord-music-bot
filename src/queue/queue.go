@@ -2,19 +2,21 @@ package queue
 
 import "github.com/kucheriavij/discord-music-bot/src/structures"
 
-type Queue []*structures.TerentyVoice
+type VoiceQueue []*structures.TerentyVoice
 
-var TerentyQueue *Queue
+var (
+	TerentyVoiceQueue *VoiceQueue
+)
 
 func NewQueue() {
-	TerentyQueue = &Queue{}
+	TerentyVoiceQueue = &VoiceQueue{}
 }
 
-func (self *Queue) Push(x *structures.TerentyVoice) {
+func (self *VoiceQueue) PushVoice(x *structures.TerentyVoice) {
 	*self = append(*self, x)
 }
 
-func (self *Queue) Pop() *structures.TerentyVoice {
+func (self *VoiceQueue) PopVoice() *structures.TerentyVoice {
 	h := *self
 	var el *structures.TerentyVoice
 	l := len(h)
