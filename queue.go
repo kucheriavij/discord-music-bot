@@ -1,8 +1,6 @@
-package queue
+package main
 
-import "github.com/kucheriavij/discord-music-bot/src/structures"
-
-type VoiceQueue []*structures.TerentyVoice
+type VoiceQueue []*TerentyVoice
 
 var (
 	TerentyVoiceQueue *VoiceQueue
@@ -12,13 +10,13 @@ func NewQueue() {
 	TerentyVoiceQueue = &VoiceQueue{}
 }
 
-func (self *VoiceQueue) PushVoice(x *structures.TerentyVoice) {
+func (self *VoiceQueue) PushVoice(x *TerentyVoice) {
 	*self = append(*self, x)
 }
 
-func (self *VoiceQueue) PopVoice() *structures.TerentyVoice {
+func (self *VoiceQueue) PopVoice() *TerentyVoice {
 	h := *self
-	var el *structures.TerentyVoice
+	var el *TerentyVoice
 	l := len(h)
 
 	if l == 0 {

@@ -1,11 +1,9 @@
-package youtube
+package main
 
 import (
 	"context"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	"github.com/kucheriavij/discord-music-bot/src/queue"
-	"github.com/kucheriavij/discord-music-bot/src/structures"
 	"google.golang.org/api/option"
 	"google.golang.org/api/youtube/v3"
 	"log"
@@ -34,7 +32,7 @@ func Search(query string, channel *discordgo.Channel) {
 	for _, item := range response.Items {
 		switch item.Id.Kind {
 		case "youtube#video":
-			queue.TerentyVoiceQueue.PushVoice(&structures.TerentyVoice{
+			TerentyVoiceQueue.PushVoice(&TerentyVoice{
 				Url:          fmt.Sprintf("https://www.youtube.com/watch?v=%s", item.Id.VideoId),
 				VoiceChannel: channel,
 			})

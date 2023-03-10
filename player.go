@@ -1,12 +1,10 @@
-package twitter // Package twitter - "Щебетарь"
+package main // Package twitter - "Щебетарь"
 
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/jonas747/dca"
 	"github.com/kkdai/youtube/v2"
-	"github.com/kucheriavij/discord-music-bot/src/queue"
-	"github.com/kucheriavij/discord-music-bot/src/structures"
 	"io"
 	"log"
 	"time"
@@ -16,7 +14,7 @@ func Play(s *discordgo.Session) {
 	for {
 		time.Sleep(500 * time.Millisecond)
 
-		terenty := queue.TerentyVoiceQueue.PopVoice()
+		terenty := TerentyVoiceQueue.PopVoice()
 
 		if terenty == nil {
 			continue
@@ -26,7 +24,7 @@ func Play(s *discordgo.Session) {
 	}
 }
 
-func playTweet(s *discordgo.Session, terenty *structures.TerentyVoice) {
+func playTweet(s *discordgo.Session, terenty *TerentyVoice) {
 	options := dca.StdEncodeOptions
 	options.RawOutput = true
 	options.Bitrate = terenty.VoiceChannel.Bitrate / 1000
