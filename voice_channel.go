@@ -3,9 +3,14 @@ package main
 import (
 	"github.com/bwmarrin/discordgo"
 	"log"
+	"regexp"
 )
 
 func GetVoiceChannel(s *discordgo.Session, guildId string, channelId string, m *discordgo.MessageCreate) *discordgo.Channel {
+	if m.Author == nil || m.Author.Bot || !isPlayCommand(m.Content) {
+		return nil
+	}
+
 	channels, err := s.GuildChannels(guildId)
 
 	if err != nil {
@@ -25,4 +30,11 @@ func GetVoiceChannel(s *discordgo.Session, guildId string, channelId string, m *
 	}
 
 	return nil
+}
+
+func isPlayCommand(command string) bool {
+	re := regexp.MustCompile("^!(search|play|random|stop)\\b")
+	match := re.FindString(command)
+
+	return match != ""
 }

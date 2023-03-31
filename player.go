@@ -10,9 +10,15 @@ import (
 	"time"
 )
 
+var status = "stop"
+
 func Play(s *discordgo.Session) {
 	for {
 		time.Sleep(500 * time.Millisecond)
+
+		if status != "stop" {
+			continue
+		}
 
 		terenty := TerentyVoiceQueue.PopVoice()
 
@@ -25,6 +31,12 @@ func Play(s *discordgo.Session) {
 }
 
 func playTweet(s *discordgo.Session, terenty *TerentyVoice) {
+	status = "play"
+
+	defer func() {
+		status = "stop"
+	}()
+
 	options := dca.StdEncodeOptions
 	options.RawOutput = true
 	options.Bitrate = terenty.VoiceChannel.Bitrate / 1000
